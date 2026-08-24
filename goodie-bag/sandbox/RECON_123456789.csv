@@ -1,0 +1,63 @@
+CUSIP,Ticker,Security Name,SPL Units,WSR Lot Count,WSR Units Total,Unit Difference,Match Status,WSR Book Cost Total,Lots Missing Basis,Basis Status,Break Category,Materiality,Reviewer Note
+067901108,GOLD,Barrick Gold Corp pre-event,200,0,0,200,SPL Only,0,0,N/A,Corporate Action,Waived,Pair of 06849F108 — same position pre/post corp action; waive
+06849F108,B,Barrick Mining Corp post-event,0,2,200,-200,WSR Only,4035,0,Complete,Corporate Action,Waived,Pair of 067901108 — same position pre/post corp action; waive
+125523100,CI,Cigna Group,0,1,95,-95,WSR Only,15884,0,Complete,Population Break,Material,"Tax lots with no custody position; book cost $15,884.00"
+369604301,GE,GE Aerospace,100000,5,120000,-20000,Qty Break,19897920,0,Complete,Quantity Break,Material,"Unit gap -20,000; est impact $3,316,320.00"
+458140100,INTC,Intel Corporation,2,2,3,-1,Qty Break,121.29,0,Complete,Quantity Break,Immaterial,Unit gap -1; est impact $40.43
+549498103,LCID,Lucid Group Inc.,3,1,1,2,Qty Break,21.43,0,Complete,Quantity Break,Immaterial,Unit gap +2; est impact $42.86
+585055106,MDT,Medtronic Inc. pre-event,150,0,0,150,SPL Only,0,0,N/A,Corporate Action,Waived,Pair of G5960L103 — same position pre/post corp action; waive
+654106103,NKE,Nike Inc. Class B,250,3,140,110,Qty Break,9908.24,0,Complete,Quantity Break,Immaterial,"Unit gap +110; est impact $7,785.05"
+68389X105,ORCL,Oracle Corporation,240,0,0,240,SPL Only,0,0,N/A,Population Break,—,"Position in custody, no tax lots; investigate"
+70450Y103,PYPL,PayPal Holdings Inc.,180,0,0,180,SPL Only,0,0,N/A,Population Break,—,"Position in custody, no tax lots; investigate"
+78409V104,SPGI,S&P Global Inc.,0,2,130,-130,WSR Only,54162.55,0,Complete,Population Break,Material,"Tax lots with no custody position; book cost $54,162.55"
+90353T100,UBER,Uber Technologies Inc.,320,0,0,320,SPL Only,0,0,N/A,Population Break,—,"Position in custody, no tax lots; investigate"
+G5960L103,MDT,Medtronic plc post-event,0,1,150,-150,WSR Only,11527.5,0,Complete,Corporate Action,Waived,Pair of 585055106 — same position pre/post corp action; waive
+00206R102,T,AT&T Inc.,520,4,520,0,Match,13188.5,0,Complete,None,—,
+002824100,ABT,Abbott Laboratories,160,2,160,0,Match,14921.6,0,Complete,None,—,
+00287Y109,ABBV,AbbVie Inc.,130,2,130,0,Match,17119.05,0,Complete,None,—,
+02079K305,GOOGL,Alphabet Inc. Class A,160,3,160,0,Match,13359.03,0,Complete,None,—,
+023135106,AMZN,Amazon.com Inc.,180,2,180,0,Match,5700.6,0,Complete,None,—,
+037833100,AAPL,Apple Inc.,300,3,300,0,Match,45992,0,Complete,None,—,
+060505104,BAC,Bank of America Corporation,400,4,400,0,Match,10229,0,Complete,None,—,
+11135F101,AVGO,Broadcom Inc.,75,2,75,0,Match,5013.69,0,Complete,None,—,
+166764100,CVX,Chevron Corporation,165,2,165,0,Match,25539.14,0,Complete,None,—,
+17275R102,CSCO,Cisco Systems Inc.,300,3,300,0,Match,14782,0,Complete,None,—,
+191216100,KO,Coca-Cola Company,260,3,260,0,Match,14368.84,0,Complete,None,—,
+20030N101,CMCSA,Comcast Corporation Class A,270,3,270,0,Match,11225.7,0,Complete,None,—,
+22160K105,COST,Costco Wholesale Corporation,55,2,55,0,Match,9462.2,0,Complete,None,—,
+254687106,DIS,Walt Disney Company,185,2,185,0,Match,18979.9,0,Complete,None,—,
+29786A106,ETSY,Etsy Inc.,85,2,85,0,Match,7849.97,0,Complete,None,—,
+30231G102,XOM,Exxon Mobil Corporation,280,3,280,0,Match,20137.45,0,Complete,None,—,
+30303M102,META,Meta Platforms Inc.,140,2,140,0,Match,32298,0,Complete,None,—,
+437076102,HD,Home Depot Inc.,120,2,120,0,Match,34701.6,0,Complete,None,—,
+456788108,INFY,Infosys Limited ADR,500,1,500,0,Match,0,1,Missing Basis,Missing Basis,—,Status UT; no cost received from delivering entity
+459200101,IBM,International Business Machines,110,2,110,0,Match,14321.45,0,Complete,None,—,
+46625H100,JPM,JPMorgan Chase & Co.,190,2,190,0,Match,27094.95,0,Complete,None,—,
+478160104,JNJ,Johnson & Johnson,210,3,210,0,Match,30339.4,0,Complete,None,—,
+532457108,LLY,Eli Lilly and Company,95,2,95,0,Match,38595.08,0,Complete,None,—,
+539439109,LYG,Lloyds Banking Group ADR,340,1,340,0,Match,0,1,Missing Basis,Missing Basis,—,Status UT; no cost received from delivering entity
+57636Q104,MA,Mastercard Incorporated,90,2,90,0,Match,13213.35,0,Complete,None,—,
+580135101,MCD,McDonald's Corporation,100,2,100,0,Match,17722,0,Complete,None,—,
+58933Y105,MRK,Merck & Co. Inc.,240,3,240,0,Match,19382.4,0,Complete,None,—,
+594918104,MSFT,Microsoft Corporation,250,4,250,0,Match,63165.73,0,Complete,None,—,
+64110L106,NFLX,Netflix Inc.,60,1,60,0,Match,38837.4,0,Complete,None,—,
+67066G104,NVDA,NVIDIA Corporation,500,5,500,0,Match,7639,0,Complete,None,—,
+713448108,PEP,PepsiCo Inc.,145,2,145,0,Match,19714.02,0,Complete,None,—,
+717081103,PFE,Pfizer Inc.,350,4,350,0,Match,11015.42,0,Complete,None,—,
+742718109,PG,Procter & Gamble Company,175,2,175,0,Match,24087.84,0,Complete,None,—,
+747525103,QCOM,QUALCOMM Incorporated,130,1,130,0,Match,22261.2,0,Complete,None,—,
+783513203,RYAAY,Ryanair Holdings ADR,150,1,150,0,Match,0,1,Missing Basis,Missing Basis,—,Status UT; no cost received from delivering entity
+79466L302,CRM,Salesforce Inc.,115,2,115,0,Match,19002.41,0,Complete,None,—,
+874039100,TSM,Taiwan Semiconductor ADR,210,3,210,0,Match,15830.5,0,Complete,None,—,
+88160R101,TSLA,Tesla Inc.,220,3,220,0,Match,19949.86,0,Complete,None,—,
+883556102,TMO,Thermo Fisher Scientific,45,1,45,0,Match,5478.3,0,Complete,None,—,
+91913Y100,VLO,Valero Energy Corporation,7.36,1,7.36,0,Match,1044.16,0,Complete,None,—,
+92343V104,VZ,Verizon Communications Inc.,310,3,310,0,Match,14451.77,0,Complete,None,—,
+92826C839,V,Visa Inc. Class A,155,2,155,0,Match,35104.86,0,Complete,None,—,
+931142103,WMT,Walmart Inc.,330,4,330,0,Match,15415.23,0,Complete,None,—,
+98980L101,ZM,Zoom Video Communications,1,1,1,0,Match,58.66,0,Complete,None,—,
+G0403H108,AON,Aon plc,279,1,279,0,Match,0,1,Missing Basis,Missing Basis,—,Status UT; no cost received from delivering entity
+G0450A105,ACGL,Arch Capital Group Ltd.,122,1,122,0,Match,0,1,Missing Basis,Missing Basis,—,Status UT; no cost received from delivering entity
+G7997R103,STX,Seagate Technology Holdings plc,88,1,88,0,Match,0,1,Missing Basis,Missing Basis,—,Status UT; no cost received from delivering entity
+N07059210,ASML,ASML Holding N.V.,64,1,64,0,Match,0,1,Missing Basis,Missing Basis,—,Status UT; no cost received from delivering entity
+N82405106,STLA,Stellantis N.V.,410,1,410,0,Match,0,1,Missing Basis,Missing Basis,—,Status UT; no cost received from delivering entity

@@ -1,0 +1,9 @@
+fund,account,cusip,symbol,long_short,units,cost_received_from_contra,basis_at_inception
+A28,123456789,456788108,INFY,long,500,N/A - Missing,N/A - Missing
+A28,123456789,539439109,LYG,long,340,N/A - Missing,N/A - Missing
+A28,123456789,783513203,RYAAY,long,150,N/A - Missing,N/A - Missing
+A28,123456789,G0403H108,AON,long,279,N/A - Missing,N/A - Missing
+A28,123456789,G0450A105,ACGL,long,122,N/A - Missing,N/A - Missing
+A28,123456789,G7997R103,STX,long,88,N/A - Missing,N/A - Missing
+A28,123456789,N07059210,ASML,long,64,N/A - Missing,N/A - Missing
+A28,123456789,N82405106,STLA,long,410,N/A - Missing,N/A - Missing

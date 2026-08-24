@@ -1,0 +1,100 @@
+<meta charset="utf-8">
+<title>Verify Before You Trust</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500;600&display=swap">
+<style>
+  /* Print-first one-pager: deliberately single-theme light. Cmd+P → Save as PDF. */
+  :root {
+    --paper: #FFFFFF; --ink: #16232A; --muted: #58696B; --rule: #D6DDD6;
+    --tick: #146B4E; --tick-soft: #E1F0E8; --amber: #8F6212; --amber-soft: #F5EBD4;
+    --code-bg: #EEF2ED;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper); color: var(--ink); margin: 0;
+    font-family: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 13.5px; line-height: 1.45;
+  }
+  .sheet { max-width: 820px; margin: 0 auto; padding: 40px 44px; }
+  .eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--tick); margin: 0 0 4px; }
+  h1 { font-size: 27px; font-weight: 700; letter-spacing: -.015em; margin: 0 0 6px; }
+  .sub { color: var(--muted); margin: 0 0 20px; max-width: 60ch; }
+  .check { display: grid; grid-template-columns: 34px 1fr; gap: 12px; margin: 0 0 15px; }
+  .tick {
+    font-weight: 700; font-size: 16px; color: var(--tick);
+    border: 1.5px solid var(--tick); border-radius: 8px; background: var(--tick-soft);
+    width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+  }
+  .check h2 { font-size: 15px; font-weight: 700; margin: 4px 0 4px; }
+  .check .move { margin: 0 0 3px; }
+  .check .move code {
+    font-family: 'Spline Sans Mono', Menlo, monospace; font-size: 11.5px;
+    background: var(--code-bg); border: 1px solid var(--rule); border-radius: 5px; padding: 1px 6px;
+  }
+  .check .whyline { margin: 0; font-size: 12.5px; color: var(--muted); }
+  .ladder {
+    border: 1px solid var(--rule); border-left: 4px solid var(--amber); border-radius: 8px;
+    background: var(--amber-soft); padding: 12px 16px; margin: 20px 0 18px;
+  }
+  .ladder h2 { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--amber); margin: 0 0 8px; }
+  .ladder ol { margin: 0; padding-left: 20px; }
+  .ladder li { margin: 4px 0; }
+  .oneliner {
+    border-top: 2px solid var(--ink); margin-top: 18px; padding-top: 12px;
+    font-size: 15px; font-weight: 600; max-width: 60ch;
+  }
+  footer { margin-top: 20px; border-top: 1px solid var(--rule); padding-top: 8px; font-size: 10.5px; color: var(--muted); }
+  @media print {
+    .sheet { padding: 24px 8px; }
+    body { font-size: 12.5px; }
+  }
+</style>
+
+<div class="sheet">
+  <p class="eyebrow">Copilot in Excel · Tax AI Global Workshop</p>
+  <h1>Verify Before You Trust</h1>
+  <p class="sub">Five checks that take under two minutes combined. Run them every session, on every number that matters. This is the difference between using AI like a professional and hoping like a tourist.</p>
+
+  <div class="check"><div class="tick">1</div><div>
+    <h2>Formula, not a value</h2>
+    <p class="move">Ask: <code>Show me the formula behind that total.</code></p>
+    <p class="whyline">Copilot sometimes writes a static number where a formula belongs. The static number is correct today and silently wrong the day a row changes.</p>
+  </div></div>
+
+  <div class="check"><div class="tick">2</div><div>
+    <h2>Tie one number to source</h2>
+    <p class="move">Pick the grand total. Trace it to the raw rows yourself, once per session.</p>
+    <p class="whyline">One independent tie-out catches whole classes of error: filtered ranges, dropped rows, a table it quietly ignored.</p>
+  </div></div>
+
+  <div class="check"><div class="tick">3</div><div>
+    <h2>Run it twice</h2>
+    <p class="move">Same prompt, fresh run. Compare the two answers.</p>
+    <p class="whyline">Output is non-deterministic. Same numbers in a different shape is normal. Different numbers is your cue to stop and check the work.</p>
+  </div></div>
+
+  <div class="check"><div class="tick">4</div><div>
+    <h2>Keys as Text</h2>
+    <p class="move">Format identifier columns (CUSIPs, account numbers) as Text before anything else touches them.</p>
+    <p class="whyline">Numeric formatting eats leading zeros silently. 067901108 becomes 67901108, joins stop matching, and nothing warns you.</p>
+  </div></div>
+
+  <div class="check"><div class="tick">5</div><div>
+    <h2>It reads your hidden tabs</h2>
+    <p class="move">Keep answer keys, drafts, and anything sensitive in a separate, closed workbook.</p>
+    <p class="whyline">Everything in the open workbook is context, hidden or not. The pane can quote a tab you forgot was there.</p>
+  </div></div>
+
+  <div class="ladder">
+    <h2>When it stalls: the recovery ladder</h2>
+    <ol>
+      <li><strong>Re-run the same prompt.</strong> Non-determinism cuts both ways; second runs often land.</li>
+      <li><strong>Switch models and re-run.</strong> Same prompt, different engine. Budget extra time for thinking models.</li>
+      <li><strong>Do it by hand.</strong> Know the manual path before you need it. The AI is a speed layer, never the only way you know how.</li>
+    </ol>
+  </div>
+
+  <p class="oneliner">Copilot is a junior analyst who is very fast at reading tables and writing formulas, and who needs you to check every number, catch every corporate action, and sign off on every conclusion.</p>
+
+  <footer>Tax AI Global Workshop · all examples from 100% synthetic data (Meridian Flex Funds, fictional) · Shane Slosar, Tax Operations</footer>
+</div>
