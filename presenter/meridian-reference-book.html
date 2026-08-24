@@ -1,0 +1,808 @@
+<meta charset="utf-8">
+<title>Meridian Reference Book</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500;600&display=swap">
+<style>
+  :root {
+    --paper: #F6F7F4;
+    --card: #FFFFFF;
+    --ink: #1C2A2E;
+    --muted: #5B6B6C;
+    --rule: #DCE2DC;
+    --tick: #177857;
+    --tick-soft: #E2F0E9;
+    --amber: #8F6212;
+    --amber-soft: #F5EBD4;
+    --brk: #A63A2B;
+    --brk-soft: #F6E4DF;
+    --code-bg: #EEF1EC;
+    --shadow: 0 1px 3px rgba(28,42,46,.08);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #101613; --card: #171F1B; --ink: #E4EAE4; --muted: #93A29A;
+      --rule: #2A342E; --tick: #4FC08D; --tick-soft: #16352A;
+      --amber: #D6A64E; --amber-soft: #3A2E14; --brk: #E0745F; --brk-soft: #3D1F1A;
+      --code-bg: #1D2622; --shadow: 0 1px 3px rgba(0,0,0,.4);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #101613; --card: #171F1B; --ink: #E4EAE4; --muted: #93A29A;
+    --rule: #2A342E; --tick: #4FC08D; --tick-soft: #16352A;
+    --amber: #D6A64E; --amber-soft: #3A2E14; --brk: #E0745F; --brk-soft: #3D1F1A;
+    --code-bg: #1D2622; --shadow: 0 1px 3px rgba(0,0,0,.4);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    background: var(--paper); color: var(--ink);
+    font-family: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 15px; line-height: 1.45; margin: 0;
+    display: flex; flex-direction: column; min-height: 100vh;
+  }
+  .mono { font-family: 'Spline Sans Mono', 'SF Mono', Menlo, monospace; }
+
+  /* ---------- header: tabs ---------- */
+  header {
+    border-bottom: 1px solid var(--rule); background: var(--card);
+    padding: 8px 16px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  }
+  header .brand { font-weight: 700; font-size: 12px; letter-spacing: .04em; white-space: nowrap; color: var(--muted); }
+  .tabs { display: flex; gap: 4px; flex-wrap: wrap; }
+  .tabs button {
+    font-family: 'Spline Sans Mono', Menlo, monospace; font-size: 11.5px; font-weight: 500;
+    color: var(--muted); background: transparent;
+    border: 1px solid var(--rule); border-radius: 6px;
+    padding: 3px 9px; cursor: pointer; white-space: nowrap;
+  }
+  .tabs button:hover, .tabs button:focus-visible { border-color: var(--tick); color: var(--tick); outline: none; }
+  .tabs button.active { background: var(--tick); border-color: var(--tick); color: #fff; font-weight: 600; }
+  :root[data-theme="dark"] .tabs button.active { color: #0c1410; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .tabs button.active { color: #0c1410; } }
+
+  /* ---------- stage ---------- */
+  main { flex: 1; display: flex; flex-direction: column; padding: 14px 20px 0; max-width: 1280px; width: 100%; margin: 0 auto; }
+  .page { display: none; flex: 1; flex-direction: column; }
+  .page.active { display: flex; }
+
+  .pagehead { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
+  .pagehead h1 { font-size: 22px; font-weight: 700; letter-spacing: -.01em; margin: 0; }
+  .chip {
+    font-family: 'Spline Sans Mono', Menlo, monospace; font-size: 11px; font-weight: 500;
+    color: var(--muted); border: 1px solid var(--rule); border-radius: 999px; padding: 2px 10px;
+  }
+
+  /* SAY band — same place, every page */
+  .say {
+    background: var(--card); border: 1px solid var(--rule); border-left: 5px solid var(--tick);
+    border-radius: 10px; box-shadow: var(--shadow);
+    padding: 16px 22px; margin-bottom: 12px;
+  }
+  .say .zl { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--tick); margin: 0 0 8px; }
+  .say ul { margin: 0; padding-left: 22px; }
+  .say li { font-size: 19px; font-weight: 500; line-height: 1.45; margin: 7px 0; max-width: 46em; }
+  .say li em { color: var(--muted); font-style: normal; font-weight: 400; font-size: 16px; }
+  .say li .q { color: var(--tick); }
+  .say li.pause { color: var(--brk); font-weight: 600; }
+
+  /* three fixed panels */
+  .row { display: grid; grid-template-columns: 1.25fr 1fr 1fr; gap: 12px; align-items: stretch; }
+  @media (max-width: 900px) { .row { grid-template-columns: 1fr; } }
+  .panel {
+    background: var(--card); border: 1px solid var(--rule); border-radius: 10px;
+    box-shadow: var(--shadow); padding: 12px 16px 14px; min-height: 150px;
+  }
+  .panel .zl { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin: 0 0 8px; }
+  .panel.do .zl { color: var(--ink); }
+  .panel.verify { border-left: 4px solid var(--tick); }
+  .panel.verify .zl { color: var(--tick); }
+  .panel.diverge { border-left: 4px solid var(--amber); }
+  .panel.diverge .zl { color: var(--amber); }
+  .panel .none { color: var(--muted); font-size: 13px; }
+
+  /* DO panel */
+  .promptbox { position: relative; }
+  .promptbox pre {
+    font-family: 'Spline Sans Mono', Menlo, monospace; font-size: 12px; line-height: 1.5;
+    background: var(--code-bg); border: 1px solid var(--rule); border-radius: 8px;
+    padding: 10px 12px 34px; margin: 0; white-space: pre-wrap; word-break: break-word;
+    max-height: 200px; overflow-y: auto;
+  }
+  .copybtn {
+    position: absolute; bottom: 8px; right: 8px;
+    font-family: 'Archivo', sans-serif; font-size: 12px; font-weight: 600;
+    color: var(--tick); background: var(--card);
+    border: 1px solid var(--tick); border-radius: 6px; padding: 4px 12px; cursor: pointer;
+  }
+  .copybtn:hover, .copybtn:focus-visible { background: var(--tick-soft); outline: none; }
+  .copybtn.done { background: var(--tick); color: var(--card); }
+  .do .hint { font-size: 12px; color: var(--muted); margin: 8px 0 0; }
+  .do ul.actions { margin: 0; padding-left: 20px; font-size: 14px; }
+  .do ul.actions li { margin: 5px 0; }
+
+  /* VERIFY panel */
+  .verify ul { margin: 0; padding: 0; list-style: none; }
+  .verify li { margin: 6px 0; padding-left: 20px; position: relative; font-size: 14px; }
+  .verify li::before { content: "✓"; position: absolute; left: 0; color: var(--tick); font-weight: 700; }
+  .verify .mono { font-weight: 600; font-variant-numeric: tabular-nums; }
+  .verify .flag { color: var(--amber); font-size: 12.5px; }
+
+  /* DIVERGE panel */
+  .diverge dl { margin: 0; }
+  .diverge dt {
+    font-family: 'Spline Sans Mono', Menlo, monospace; font-size: 10.5px; font-weight: 600;
+    letter-spacing: .06em; margin-top: 8px;
+  }
+  .diverge dt:first-child { margin-top: 0; }
+  .diverge dt.m { color: var(--tick); } .diverge dt.c { color: var(--amber); } .diverge dt.b { color: var(--brk); }
+  .diverge dd { margin: 1px 0 0; font-size: 13px; }
+
+  /* checklist (pre-flight) */
+  .check { list-style: none; margin: 0; padding: 0; }
+  .check li { display: flex; gap: 9px; align-items: flex-start; padding: 5px 0; font-size: 14px; }
+  .check input[type="checkbox"] { margin-top: 3px; width: 15px; height: 15px; accent-color: var(--tick); flex-shrink: 0; }
+  .check label { cursor: pointer; }
+
+  /* drawer: expected tables etc. */
+  .drawer {
+    display: none; margin-top: 12px; background: var(--card);
+    border: 1px solid var(--rule); border-radius: 10px; box-shadow: var(--shadow);
+    padding: 14px 16px; overflow: auto; max-height: 46vh;
+  }
+  .page.open .drawer { display: block; }
+  .drawer h3 { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 0 0 8px; }
+  .tblwrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: 8px; margin: 6px 0 12px; }
+  table { border-collapse: collapse; width: 100%; font-size: 12.5px; }
+  th { text-align: left; font-size: 10.5px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 600; padding: 6px 10px; border-bottom: 1px solid var(--rule); background: var(--code-bg); white-space: nowrap; }
+  td { padding: 4px 10px; border-bottom: 1px solid var(--rule); }
+  tr:last-child td { border-bottom: none; }
+  td.num, th.num { text-align: right; }
+  td.num, td.cusip { font-family: 'Spline Sans Mono', Menlo, monospace; font-variant-numeric: tabular-nums; font-size: 12px; }
+  td.total { font-weight: 600; }
+  tr.hl td { background: var(--tick-soft); }
+  .flagnote { border-left: 4px solid var(--amber); background: var(--amber-soft); border-radius: 6px; padding: 8px 12px; font-size: 13px; margin: 0 0 12px; }
+  .notes {
+    font-family: 'Spline Sans Mono', Menlo, monospace; font-size: 12px;
+    background: var(--code-bg); border: 1px dashed var(--rule); border-radius: 8px;
+    padding: 8px 10px; min-height: 34px; white-space: pre-wrap;
+  }
+  .notes:focus-visible { outline: 2px solid var(--tick); outline-offset: 1px; }
+  .notes:empty::before { content: attr(data-ph); color: var(--muted); }
+
+  /* ---------- footer controls ---------- */
+  .controls {
+    position: sticky; bottom: 0; margin-top: 14px;
+    background: var(--card); border-top: 1px solid var(--rule);
+    padding: 10px 20px; display: flex; align-items: center; gap: 14px;
+  }
+  .controls .navbtn {
+    font-family: 'Archivo', sans-serif; font-size: 15px; font-weight: 700;
+    background: var(--tick); color: #fff; border: none; border-radius: 8px;
+    padding: 10px 26px; cursor: pointer; min-width: 120px;
+  }
+  :root[data-theme="dark"] .controls .navbtn { color: #0c1410; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .controls .navbtn { color: #0c1410; } }
+  .controls .navbtn.prev { background: transparent; color: var(--ink); border: 1px solid var(--rule); font-weight: 600; }
+  .controls .navbtn:hover, .controls .navbtn:focus-visible { filter: brightness(1.06); outline: none; }
+  .controls .navbtn:disabled { opacity: .35; cursor: default; }
+  .controls .pos { font-family: 'Spline Sans Mono', Menlo, monospace; font-size: 13px; color: var(--muted); min-width: 70px; text-align: center; }
+  .controls .drawerbtn {
+    margin-left: auto; font-size: 13px; font-weight: 600; color: var(--muted);
+    background: transparent; border: 1px solid var(--rule); border-radius: 8px;
+    padding: 8px 16px; cursor: pointer;
+  }
+  .controls .drawerbtn:hover, .controls .drawerbtn:focus-visible { border-color: var(--tick); color: var(--tick); outline: none; }
+  .controls .drawerbtn:disabled { opacity: .35; cursor: default; }
+  .controls .keys { font-size: 11.5px; color: var(--muted); }
+  .controls .keys kbd {
+    font-family: 'Spline Sans Mono', Menlo, monospace; font-size: 10.5px;
+    border: 1px solid var(--rule); border-radius: 4px; padding: 1px 5px; margin: 0 1px;
+  }
+</style>
+
+<header>
+  <span class="brand">MERIDIAN · PRESENTER CONSOLE</span>
+  <nav class="tabs" id="tabs"></nav>
+</header>
+
+<main id="stage">
+
+  <!-- ============ 0 PRE-FLIGHT ============ -->
+  <section class="page" data-tab="Pre-flight">
+    <div class="pagehead"><h1>Pre-flight — before the projector goes live</h1><span class="chip">room sees nothing yet</span></div>
+    <div class="say">
+      <p class="zl">Say — to yourself</p>
+      <ul>
+        <li>Projector stays off until every box below is ticked.</li>
+        <li>The answer key is a <strong>separate, closed</strong> workbook — Copilot reads hidden tabs.</li>
+        <li>One same-day rehearsal run logged before doors open.</li>
+      </ul>
+    </div>
+    <div class="row">
+      <div class="panel do">
+        <p class="zl">Do</p>
+        <ul class="check">
+          <li><input type="checkbox" id="c1"><label for="c1">Import SPL_123456789.csv → Table → <span class="mono">tblSPL</span></label></li>
+          <li><input type="checkbox" id="c2"><label for="c2">Import WSR_123456789.csv → Table → <span class="mono">tblWSR</span></label></li>
+          <li><input type="checkbox" id="c3"><label for="c3">RECON file kept <strong>closed &amp; separate</strong> — never a hidden tab</label></li>
+          <li><input type="checkbox" id="c4"><label for="c4">CUSIP columns formatted as <strong>Text</strong> (leading zeros)</label></li>
+          <li><input type="checkbox" id="c5"><label for="c5">Copilot pane open · all other workbooks closed</label></li>
+          <li><input type="checkbox" id="c7"><label for="c7">Model picker → <strong>Opus</strong> (4.8/5) · backup <strong>GPT 5.6 extra think</strong> confirmed on THIS machine</label></li>
+          <li><input type="checkbox" id="c6"><label for="c6">This console on the laptop screen — not the projector</label></li>
+        </ul>
+      </div>
+      <div class="panel verify">
+        <p class="zl">Verify</p>
+        <ul>
+          <li>Tables named <span class="mono">tblSPL</span> / <span class="mono">tblWSR</span> exactly</li>
+          <li><span class="mono">067901108</span> shows its leading zero</li>
+          <li>Recon workbook closed</li>
+        </ul>
+      </div>
+      <div class="panel diverge">
+        <p class="zl">If short on time</p>
+        <dl>
+          <dt class="m">SKIPPABLE</dt><dd>Rehearsal log entry.</dd>
+          <dt class="b">NEVER SKIP</dt><dd>Text-formatting the CUSIP columns; closing the recon workbook.</dd>
+        </dl>
+      </div>
+    </div>
+    <div class="drawer">
+      <h3>Deck drift — settled by execution against the real CSVs (2026-08-24)</h3>
+      <div class="flagnote"><strong>Verified &amp; regenerated (2026-08-24):</strong> lot prices were rebuilt with realistic split-adjusted values (the $447 BAC era is over) and all five steps recomputed from the raw data. Structure unchanged: 13 mismatches, 5/4/4, 8 UT lots / 1,953 units. New dollars: grand total $20,782,173.27, GE $19,897,920.00 (95.75%), GE impact $3,316,320, material 4 → 3. Re-import the fresh CSVs from ~/projects/taxai-demo/data/ before rehearsing.</div>
+      <div class="flagnote"><strong>Appendix B vs. the steps:</strong> deck claims 23 breaks / 39 clean; the five prompts produce <strong>21 / 41</strong>. Check <span class="mono">master-roster_taxai-demo.csv</span> BREAK_FLAG for the 2 extras.</div>
+      <div class="flagnote"><strong>Step 5 materiality (realistic prices):</strong> pre-nudge material = <strong>4</strong> (GE, CI, SPGI, MDT plc); post-nudge = <strong>3</strong> (GE, SPGI, CI). Nike ($7,785) and Barrick ($4,035) now fall below the $10K threshold — the deck's old "5 → 3" text needs its "5" fixed to 4.</div>
+      <div class="flagnote"><strong>Step 1 mock:</strong> "62 CUSIPs" in tblWSR should be exactly 57 (verified: roster 62 minus 5 SPL-only).</div>
+      <h3>Glossary — spell out on first spoken use</h3>
+      <div class="tblwrap"><table>
+        <tr><th>Term</th><th>Meaning</th></tr>
+        <tr><td class="cusip">ABC</td><td>Fictional client name — the demo's stand-in institution</td></tr>
+        <tr><td class="cusip">SPL</td><td>Share Position Ledger — custody: what you hold, how many</td></tr>
+        <tr><td class="cusip">WSR</td><td>Worksheet Report — GainsKeeper tax lots: what you paid</td></tr>
+        <tr><td class="cusip">CUSIP</td><td>9-char North American security ID; leading zeros are part of the ID</td></tr>
+        <tr><td class="cusip">UT / C</td><td>Status: Unsettled Transfer (no basis received) / Complete (settled, basis populated)</td></tr>
+        <tr><td class="cusip">lt / st</td><td>GL Term — long-term / short-term holding period</td></tr>
+        <tr><td class="cusip">TD / SD</td><td>Trade-date / settle-date units in the SPL</td></tr>
+        <tr><td class="cusip">Contra</td><td>The delivering entity on the other side of a transfer</td></tr>
+      </table></div>
+
+  <!-- ============ 1 CONTEXT A ============ -->
+  <section class="page" data-tab="§1a What">
+    <div class="pagehead"><h1>What is a missing-cost reconciliation?</h1><span class="chip">§1 context · ~3 min total</span></div>
+    <div class="say">
+      <p class="zl">Say</p>
+      <ul>
+        <li>When positions transfer, <strong>shares and cost basis travel separately</strong>.</li>
+        <li>SPL — Share Position Ledger. Custody: <em>what you hold, how many.</em></li>
+        <li>WSR — Worksheet Report, GainsKeeper. Tax lots: <em>what you paid.</em></li>
+        <li><span class="q">"For every position the fund holds, does the tax system have a cost? If not — why not, and what do we do about it?"</span></li>
+      </ul>
+    </div>
+    <div class="row">
+      <div class="panel do"><p class="zl">Do</p><p class="none">Nothing to paste — slides only.</p></div>
+      <div class="panel verify"><p class="zl">Verify</p><p class="none">—</p></div>
+      <div class="panel diverge"><p class="zl">If it diverges</p><p class="none">—</p></div>
+    </div>
+  </section>
+
+  <!-- ============ 2 CONTEXT B ============ -->
+  <section class="page" data-tab="§1b Manual">
+    <div class="pagehead"><h1>The manual process today</h1><span class="chip">§1 context</span></div>
+    <div class="say">
+      <p class="zl">Say</p>
+      <ul>
+        <li>Pull the SPL. Pull the WSR. Build the VLOOKUP or pivot to match CUSIPs.</li>
+        <li>Eyeball every disagreement. Investigate each break — corp action? timing? genuinely missing cost?</li>
+        <li>Write it up for a reviewer.</li>
+        <li><strong>Small account: an hour. Twelve accounts, 3,700 rows: a week.</strong></li>
+        <li><span class="q">"Copilot is about to do steps 1 through 5 in about ten minutes."</span></li>
+      </ul>
+    </div>
+    <div class="row">
+      <div class="panel do"><p class="zl">Do</p><p class="none">Nothing to paste — slides only.</p></div>
+      <div class="panel verify"><p class="zl">Verify</p><p class="none">—</p></div>
+      <div class="panel diverge"><p class="zl">If it diverges</p><p class="none">—</p></div>
+    </div>
+  </section>
+
+  <!-- ============ 3 CONTEXT C ============ -->
+  <section class="page" data-tab="§1c Data">
+    <div class="pagehead"><h1>What we're working with</h1><span class="chip">§1 context · switch to Excel after this</span></div>
+    <div class="say">
+      <p class="zl">Say</p>
+      <ul>
+        <li>Two tabs, already loaded. <strong>Raw data — no formulas, no pivots.</strong></li>
+        <li><span class="mono">tblSPL</span>: 58 rows, custody holdings. <span class="mono">tblWSR</span>: 126 rows, tax lot detail.</li>
+        <li><span class="q">"Everything Copilot does from here, it builds live."</span></li>
+      </ul>
+    </div>
+    <div class="row">
+      <div class="panel do"><p class="zl">Do</p><ul class="actions"><li>Switch projector to Excel</li><li>Show both tabs briefly</li><li>Open the Copilot pane</li></ul></div>
+      <div class="panel verify"><p class="zl">Verify</p><ul><li>Both tables visible &amp; named</li><li>Copilot pane responsive</li></ul></div>
+      <div class="panel diverge"><p class="zl">If it diverges</p><dl><dt class="b">PANE DEAD</dt><dd>Restart Excel now, not mid-demo — banter through it.</dd></dl></div>
+    </div>
+  </section>
+
+  <!-- ============ 4 STEP 1 ============ -->
+  <section class="page" data-tab="1 Aggregate">
+    <div class="pagehead"><h1>Step 1 — How big is the book?</h1><span class="chip">§2 demo · type this one</span></div>
+    <div class="say">
+      <p class="zl">Say</p>
+      <ul>
+        <li><span class="q">"One prompt. No pivot table, no SUMIF."</span></li>
+        <li>126 rows, grouped and summed, conversationally.</li>
+        <li><strong>It flagged the GE concentration — 96% of book — without being asked.</strong></li>
+        <li><em>"Useful. Also exactly where you start watching it carefully."</em></li>
+      </ul>
+    </div>
+    <div class="row">
+      <div class="panel do">
+        <p class="zl">Paste / type</p>
+        <div class="promptbox"><pre>In tblWSR, total the Book Cost by Security ID and show me the grand total.</pre><button class="copybtn" type="button">Copy</button></div>
+      </div>
+      <div class="panel verify">
+        <p class="zl">Verify</p>
+        <ul>
+          <li>Grand total <span class="mono">$20,782,173.27</span></li>
+          <li>GE <span class="mono">$19,897,920.00</span> ≈ 96%</li>
+          <li>Formula, <strong>not</strong> a hardcoded value</li>
+        </ul>
+      </div>
+      <div class="panel diverge">
+        <p class="zl">If it diverges</p>
+        <dl>
+          <dt class="m">MATCH</dt><dd>"Ties to my pre-run." Move on.</dd>
+          <dt class="c">COSMETIC</dt><dd>"Same answer, different shape — non-determinism. It's why you verify."</dd>
+          <dt class="b">BREAK</dt><dd>Say expected figure; ask it to show the formula. Likely CUSIP-as-number → "treat CUSIP as text."</dd>
+        </dl>
+      </div>
+    </div>
+    <div class="drawer">
+      <h3>Expected output (pre-run)</h3>
+      <div class="tblwrap"><table>
+        <tr><th>Security ID</th><th>Security</th><th class="num">Total Book Cost</th></tr>
+        <tr class="hl"><td class="cusip">369604301</td><td>GE Aerospace</td><td class="num total">$19,897,920.00</td></tr>
+        <tr><td class="cusip">594918104</td><td>Microsoft</td><td class="num">$63,165.73</td></tr>
+        <tr><td class="cusip">78409V104</td><td>S&amp;P Global</td><td class="num">$54,162.55</td></tr>
+        <tr><td class="cusip">037833100</td><td>Apple</td><td class="num">$45,992.00</td></tr>
+        <tr><td class="cusip">64110L106</td><td>Netflix</td><td class="num">$38,837.40</td></tr>
+        <tr><td class="cusip">…</td><td><em>~52 more CUSIPs</em></td><td class="num">…</td></tr>
+        <tr><td></td><td class="total">Grand total</td><td class="num total">$20,782,173.27</td></tr>
+      </table></div>
+      <div class="flagnote">Deck's mock says "62 CUSIPs" — tblWSR actually holds exactly 57 distinct.</div>
+      <h3>Rehearsal variance</h3>
+      <div class="notes" contenteditable="true" data-key="n1" data-ph="What did this step return in rehearsal — tag each run with its engine (Opus / GPT 5.6)…"></div>
+    </div>
+  </section>
+
+  <!-- ============ 5 STEP 2 ============ -->
+  <section class="page" data-tab="2 Compare">
+    <div class="pagehead"><h1>Step 2 — Where do the numbers differ?</h1><span class="chip">§2 demo</span></div>
+    <div class="say">
+      <p class="zl">Say</p>
+      <ul>
+        <li><span class="q">"This is the VLOOKUP-and-eyeball exercise — as one prompt."</span></li>
+        <li><strong>13 CUSIPs disagree. 49 tie exactly.</strong></li>
+        <li><em>"'Different totals' isn't the same as 'a real break.' That's next."</em></li>
+      </ul>
+    </div>
+    <div class="row">
+      <div class="panel do">
+        <p class="zl">Paste</p>
+        <div class="promptbox"><pre>Compare total units per CUSIP between tblSPL (column "Product" = CUSIP, column "TD" = units) and tblWSR (column "Security ID" = CUSIP, column "Units Utilized" = units). Show me every CUSIP where the totals don't match.</pre><button class="copybtn" type="button">Copy</button></div>
+      </div>
+      <div class="panel verify">
+        <p class="zl">Verify</p>
+        <ul>
+          <li>Count = <span class="mono">13</span> mismatches / <span class="mono">49</span> clean</li>
+          <li>GE gap <span class="mono">−20,000</span></li>
+          <li>5 rows WSR=0 · 4 rows SPL=0</li>
+        </ul>
+      </div>
+      <div class="panel diverge">
+        <p class="zl">If it diverges</p>
+        <dl>
+          <dt class="m">MATCH</dt><dd>Tee up Step 3 line. Move on.</dd>
+          <dt class="c">COSMETIC</dt><dd>Order / sign convention differ — fine if GE gap = 20,000 either sign.</dd>
+          <dt class="b">BREAK</dt><dd>Count ≠ 13: canary CUSIPs 067901108 / 060505104 / 06849F108 missing → leading-zero issue → "treat CUSIP as text."</dd>
+        </dl>
+      </div>
+    </div>
+    <div class="drawer">
+      <h3>Expected output — all 13 mismatches</h3>
+      <div class="tblwrap"><table>
+        <tr><th>CUSIP</th><th>Name</th><th class="num">SPL</th><th class="num">WSR</th><th class="num">Diff</th></tr>
+        <tr class="hl"><td class="cusip">369604301</td><td>GE Aerospace</td><td class="num">100,000</td><td class="num">120,000</td><td class="num">−20,000</td></tr>
+        <tr><td class="cusip">654106103</td><td>Nike Class B</td><td class="num">250</td><td class="num">140</td><td class="num">+110</td></tr>
+        <tr><td class="cusip">458140100</td><td>Intel</td><td class="num">2</td><td class="num">3</td><td class="num">−1</td></tr>
+        <tr><td class="cusip">549498103</td><td>Lucid Group</td><td class="num">3</td><td class="num">1</td><td class="num">+2</td></tr>
+        <tr><td class="cusip">067901108</td><td>Barrick Gold Corp</td><td class="num">200</td><td class="num">0</td><td class="num">+200</td></tr>
+        <tr><td class="cusip">585055106</td><td>Medtronic Inc.</td><td class="num">150</td><td class="num">0</td><td class="num">+150</td></tr>
+        <tr><td class="cusip">68389X105</td><td>Oracle</td><td class="num">240</td><td class="num">0</td><td class="num">+240</td></tr>
+        <tr><td class="cusip">70450Y103</td><td>PayPal</td><td class="num">180</td><td class="num">0</td><td class="num">+180</td></tr>
+        <tr><td class="cusip">90353T100</td><td>Uber</td><td class="num">320</td><td class="num">0</td><td class="num">+320</td></tr>
+        <tr><td class="cusip">06849F108</td><td>Barrick Mining Corp</td><td class="num">0</td><td class="num">200</td><td class="num">−200</td></tr>
+        <tr><td class="cusip">125523100</td><td>Cigna Group</td><td class="num">0</td><td class="num">95</td><td class="num">−95</td></tr>
+        <tr><td class="cusip">78409V104</td><td>S&amp;P Global</td><td class="num">0</td><td class="num">130</td><td class="num">−130</td></tr>
+        <tr><td class="cusip">G5960L103</td><td>Medtronic plc</td><td class="num">0</td><td class="num">150</td><td class="num">−150</td></tr>
+      </table></div>
+      <h3>Rehearsal variance</h3>
+      <div class="notes" contenteditable="true" data-key="n2" data-ph="What did this step return in rehearsal — tag each run with its engine (Opus / GPT 5.6)…"></div>
+    </div>
+  </section>
+
+  <!-- ============ 6 STEP 3 ============ -->
+  <section class="page" data-tab="3 Diff">
+    <div class="pagehead"><h1>Step 3 — What's missing from each side?</h1><span class="chip">§2 demo · the room's moment</span></div>
+    <div class="say">
+      <p class="zl">Say</p>
+      <ul>
+        <li class="pause">PAUSE — <span class="q">"Look at those two lists side by side. Does anyone notice anything?"</span> Wait for the room.</li>
+        <li>Barrick Gold, 200 out ↔ Barrick <strong>Mining</strong>, 200 in. New name, new CUSIP, same shares.</li>
+        <li>Medtronic Inc. ↔ Medtronic plc — redomiciliation.</li>
+        <li><span class="q">"Copilot surfaced the data. A human caught the pattern. That's the partnership."</span></li>
+      </ul>
+    </div>
+    <div class="row">
+      <div class="panel do">
+        <p class="zl">Paste</p>
+        <div class="promptbox"><pre>Of those 13 mismatches, which CUSIPs appear only in tblSPL with zero in tblWSR, and which appear only in tblWSR with zero in tblSPL?</pre><button class="copybtn" type="button">Copy</button></div>
+      </div>
+      <div class="panel verify">
+        <p class="zl">Verify</p>
+        <ul>
+          <li>Buckets <span class="mono">5</span> SPL-only / <span class="mono">4</span> WSR-only / <span class="mono">4</span> qty</li>
+          <li>Barrick pair <span class="mono">200 ↔ 200</span></li>
+          <li>Medtronic pair <span class="mono">150 ↔ 150</span></li>
+        </ul>
+      </div>
+      <div class="panel diverge">
+        <p class="zl">If it diverges</p>
+        <dl>
+          <dt class="m">MATCH</dt><dd>Run the pause. Don't rush it.</dd>
+          <dt class="c">COPILOT SPOTS IT</dt><dd>"It caught what usually takes a human eye — you'd still verify against corp-action history before waiving."</dd>
+          <dt class="b">BREAK</dt><dd>Lost context → "Use only the 13 CUSIPs from your previous answer," or re-run Step 2 first.</dd>
+        </dl>
+      </div>
+    </div>
+    <div class="drawer">
+      <h3>Expected output</h3>
+      <div class="tblwrap"><table>
+        <tr><th>Bucket</th><th>CUSIP</th><th>Name</th><th class="num">Units</th><th class="num">Book Cost</th></tr>
+        <tr class="hl"><td>SPL only</td><td class="cusip">067901108</td><td>Barrick Gold Corp</td><td class="num">200</td><td class="num">—</td></tr>
+        <tr class="hl"><td>SPL only</td><td class="cusip">585055106</td><td>Medtronic Inc.</td><td class="num">150</td><td class="num">—</td></tr>
+        <tr><td>SPL only</td><td class="cusip">68389X105</td><td>Oracle</td><td class="num">240</td><td class="num">—</td></tr>
+        <tr><td>SPL only</td><td class="cusip">70450Y103</td><td>PayPal</td><td class="num">180</td><td class="num">—</td></tr>
+        <tr><td>SPL only</td><td class="cusip">90353T100</td><td>Uber</td><td class="num">320</td><td class="num">—</td></tr>
+        <tr class="hl"><td>WSR only</td><td class="cusip">06849F108</td><td>Barrick Mining Corp</td><td class="num">200</td><td class="num">$4,035.00</td></tr>
+        <tr class="hl"><td>WSR only</td><td class="cusip">G5960L103</td><td>Medtronic plc</td><td class="num">150</td><td class="num">$11,527.50</td></tr>
+        <tr><td>WSR only</td><td class="cusip">125523100</td><td>Cigna Group</td><td class="num">95</td><td class="num">$15,884.00</td></tr>
+        <tr><td>WSR only</td><td class="cusip">78409V104</td><td>S&amp;P Global</td><td class="num">130</td><td class="num">$54,162.55</td></tr>
+      </table></div>
+      <h3>Rehearsal variance</h3>
+      <div class="notes" contenteditable="true" data-key="n3" data-ph="What did this step return in rehearsal — tag each run with its engine (Opus / GPT 5.6)…"></div>
+    </div>
+  </section>
+
+  <!-- ============ 7 STEP 4 ============ -->
+  <section class="page" data-tab="4 Basis">
+    <div class="pagehead"><h1>Step 4 — Which lots have no cost?</h1><span class="chip">§2 demo</span></div>
+    <div class="say">
+      <p class="zl">Say</p>
+      <ul>
+        <li><span class="q">"This is the actual missing-cost population."</span></li>
+        <li><strong>Eight securities. 1,953 units. Every one Status UT — Unsettled Transfer.</strong></li>
+        <li>No buy date, no cost, no tax cost — the delivering entity never sent basis.</li>
+        <li><em>"Copilot just reproduced, live, the exception list that first took a Python script."</em></li>
+      </ul>
+    </div>
+    <div class="row">
+      <div class="panel do">
+        <p class="zl">Paste</p>
+        <div class="promptbox"><pre>In tblWSR, flag every row where Book Cost is blank or empty. Group by Security ID and show me the total units affected per CUSIP.</pre><button class="copybtn" type="button">Copy</button></div>
+      </div>
+      <div class="panel verify">
+        <p class="zl">Verify</p>
+        <ul>
+          <li><span class="mono">8</span> lots / <span class="mono">8</span> CUSIPs</li>
+          <li>Units total <span class="mono">1,953</span></li>
+          <li>All Status = <span class="mono">UT</span>, all cost fields blank</li>
+        </ul>
+      </div>
+      <div class="panel diverge">
+        <p class="zl">If it diverges</p>
+        <dl>
+          <dt class="m">MATCH</dt><dd>Deliver the UT pattern line. Move on.</dd>
+          <dt class="c">COSMETIC</dt><dd>Grouped by name, extra columns — fine if 8 and 1,953 tie.</dd>
+          <dt class="b">BREAK</dt><dd>Count off → "Treat cells that are empty, blank, or only spaces as missing."</dd>
+        </dl>
+      </div>
+    </div>
+    <div class="drawer">
+      <h3>Expected output — all 8 lots</h3>
+      <div class="tblwrap"><table>
+        <tr><th>Security ID</th><th>Security</th><th class="num">Units</th><th>Status</th></tr>
+        <tr><td class="cusip">456788108</td><td>Infosys ADR</td><td class="num">500</td><td class="cusip">UT</td></tr>
+        <tr><td class="cusip">539439109</td><td>Lloyds Banking ADR</td><td class="num">340</td><td class="cusip">UT</td></tr>
+        <tr><td class="cusip">783513203</td><td>Ryanair ADR</td><td class="num">150</td><td class="cusip">UT</td></tr>
+        <tr><td class="cusip">G0403H108</td><td>Aon plc</td><td class="num">279</td><td class="cusip">UT</td></tr>
+        <tr><td class="cusip">G0450A105</td><td>Arch Capital</td><td class="num">122</td><td class="cusip">UT</td></tr>
+        <tr><td class="cusip">G7997R103</td><td>Seagate</td><td class="num">88</td><td class="cusip">UT</td></tr>
+        <tr><td class="cusip">N07059210</td><td>ASML Holding</td><td class="num">64</td><td class="cusip">UT</td></tr>
+        <tr><td class="cusip">N82405106</td><td>Stellantis</td><td class="num">410</td><td class="cusip">UT</td></tr>
+        <tr><td></td><td class="total">Total units</td><td class="num total">1,953</td><td></td></tr>
+      </table></div>
+      <h3>Rehearsal variance</h3>
+      <div class="notes" contenteditable="true" data-key="n4" data-ph="What did this step return in rehearsal — tag each run with its engine (Opus / GPT 5.6)…"></div>
+    </div>
+  </section>
+
+  <!-- ============ 8 STEP 5 ============ -->
+  <section class="page" data-tab="5 Classify">
+    <div class="pagehead"><h1>Step 5 — What kind of break is each?</h1><span class="chip">§2 demo · PASTE the long prompt</span></div>
+    <div class="say">
+      <p class="zl">Say</p>
+      <ul>
+        <li><em>Expect it to get Barrick / Medtronic <strong>wrong</strong> — separate breaks. That's the setup, not a failure.</em></li>
+        <li><span class="q">"Technically correct from the data — but a human knows those are the same 200 shares."</span></li>
+        <li><span class="q">"So let's steer it."</span> → next page.</li>
+      </ul>
+    </div>
+    <div class="row">
+      <div class="panel do">
+        <p class="zl">Paste</p>
+        <div class="promptbox"><pre>For every CUSIP that isn't a clean match between tblSPL and tblWSR, classify it as one of:
+- Corporate Action (appears only on one side but the same position exists under a different CUSIP on the other side)
+- Missing Basis (units match but Book Cost is blank)
+- Quantity Break (appears on both sides but unit totals differ)
+- Population Break (appears only on one side with no corresponding CUSIP on the other)
+
+For Quantity Breaks and Population Breaks, estimate the dollar impact using the average Book Cost per unit from tblWSR. Mark it "Material" if the estimate exceeds $10,000.</pre><button class="copybtn" type="button">Copy</button></div>
+      </div>
+      <div class="panel verify">
+        <p class="zl">Verify</p>
+        <ul>
+          <li><span class="mono">21</span> rows: 4 qty / 9 pop / 8 missing-basis</li>
+          <li>Material = <span class="mono">4</span>: GE, CI, SPGI, MDT plc</li>
+          <li>GE impact <span class="mono">$3,316,320</span></li>
+          <li>Barrick + Medtronic still split — <strong>expected miss</strong></li>
+        </ul>
+      </div>
+      <div class="panel diverge">
+        <p class="zl">If it diverges</p>
+        <dl>
+          <dt class="m">MATCH</dt><dd>Deliver the "steer it" line → 5b.</dd>
+          <dt class="c">SELF-LINKED PAIRS</dt><dd>Skip the nudge; upgrade: "It inferred the pairing — you'd still verify before waiving."</dd>
+          <dt class="b">BREAK</dt><dd>Ask for the GE per-unit calc; if hardcoded → static-number teaching line. Worst case: stall recovery (last page).</dd>
+        </dl>
+      </div>
+    </div>
+    <div class="drawer">
+      <h3>Expected output — 21 rows (material rows highlighted)</h3>
+      <div class="tblwrap"><table>
+        <tr><th>CUSIP</th><th>Tkr</th><th>Category</th><th class="num">SPL</th><th class="num">WSR</th><th class="num">Impact</th><th>Mat.</th></tr>
+        <tr class="hl"><td class="cusip">369604301</td><td class="cusip">GE</td><td>Quantity</td><td class="num">100,000</td><td class="num">120,000</td><td class="num">$3,316,320</td><td>YES</td></tr>
+        <tr><td class="cusip">654106103</td><td class="cusip">NKE</td><td>Quantity</td><td class="num">250</td><td class="num">140</td><td class="num">$7,785</td><td>no</td></tr>
+        <tr><td class="cusip">458140100</td><td class="cusip">INTC</td><td>Quantity</td><td class="num">2</td><td class="num">3</td><td class="num">$278</td><td>no</td></tr>
+        <tr><td class="cusip">549498103</td><td class="cusip">LCID</td><td>Quantity</td><td class="num">3</td><td class="num">1</td><td class="num">$924</td><td>no</td></tr>
+        <tr><td class="cusip">06849F108</td><td class="cusip">B</td><td>Pop · WSR only</td><td class="num">0</td><td class="num">200</td><td class="num">$4,035</td><td>no</td></tr>
+        <tr class="hl"><td class="cusip">125523100</td><td class="cusip">CI</td><td>Pop · WSR only</td><td class="num">0</td><td class="num">95</td><td class="num">$15,884</td><td>YES</td></tr>
+        <tr class="hl"><td class="cusip">78409V104</td><td class="cusip">SPGI</td><td>Pop · WSR only</td><td class="num">0</td><td class="num">130</td><td class="num">$54,163</td><td>YES</td></tr>
+        <tr class="hl"><td class="cusip">G5960L103</td><td class="cusip">MDT</td><td>Pop · WSR only</td><td class="num">0</td><td class="num">150</td><td class="num">$11,528</td><td>YES</td></tr>
+        <tr><td class="cusip">067901108</td><td class="cusip">GOLD</td><td>Pop · SPL only</td><td class="num">200</td><td class="num">0</td><td class="num">—</td><td>—</td></tr>
+        <tr><td class="cusip">585055106</td><td class="cusip">MDT</td><td>Pop · SPL only</td><td class="num">150</td><td class="num">0</td><td class="num">—</td><td>—</td></tr>
+        <tr><td class="cusip">68389X105</td><td class="cusip">ORCL</td><td>Pop · SPL only</td><td class="num">240</td><td class="num">0</td><td class="num">—</td><td>—</td></tr>
+        <tr><td class="cusip">70450Y103</td><td class="cusip">PYPL</td><td>Pop · SPL only</td><td class="num">180</td><td class="num">0</td><td class="num">—</td><td>—</td></tr>
+        <tr><td class="cusip">90353T100</td><td class="cusip">UBER</td><td>Pop · SPL only</td><td class="num">320</td><td class="num">0</td><td class="num">—</td><td>—</td></tr>
+        <tr><td class="cusip">456788108</td><td class="cusip">INFY</td><td>Missing Basis</td><td class="num">500</td><td class="num">500</td><td class="num">—</td><td>—</td></tr>
+        <tr><td class="cusip">539439109</td><td class="cusip">LYG</td><td>Missing Basis</td><td class="num">340</td><td class="num">340</td><td class="num">—</td><td>—</td></tr>
+        <tr><td class="cusip">783513203</td><td class="cusip">RYAAY</td><td>Missing Basis</td><td class="num">150</td><td class="num">150</td><td class="num">—</td><td>—</td></tr>
+        <tr><td class="cusip">G0403H108</td><td class="cusip">AON</td><td>Missing Basis</td><td class="num">279</td><td class="num">279</td><td class="num">—</td><td>—</td></tr>
+        <tr><td class="cusip">G0450A105</td><td class="cusip">ACGL</td><td>Missing Basis</td><td class="num">122</td><td class="num">122</td><td class="num">—</td><td>—</td></tr>
+        <tr><td class="cusip">G7997R103</td><td class="cusip">STX</td><td>Missing Basis</td><td class="num">88</td><td class="num">88</td><td class="num">—</td><td>—</td></tr>
+        <tr><td class="cusip">N07059210</td><td class="cusip">ASML</td><td>Missing Basis</td><td class="num">64</td><td class="num">64</td><td class="num">—</td><td>—</td></tr>
+        <tr><td class="cusip">N82405106</td><td class="cusip">STLA</td><td>Missing Basis</td><td class="num">410</td><td class="num">410</td><td class="num">—</td><td>—</td></tr>
+      </table></div>
+      <div class="flagnote">Realistic prices (2026-08-24): material = <strong>4</strong> (GE, CI, SPGI, MDT plc). Nike and Barrick are now sub-threshold. Update the deck's Step 5 mock table to these figures.</div>
+      <h3>Rehearsal variance</h3>
+      <div class="notes" contenteditable="true" data-key="n5" data-ph="Highest-variance step — log every rehearsal run, tagged with its engine (Opus / GPT 5.6)…"></div>
+    </div>
+  </section>
+
+  <!-- ============ 9 STEP 5b ============ -->
+  <section class="page" data-tab="5b Nudge">
+    <div class="pagehead"><h1>Step 5b — The nudge, and the close</h1><span class="chip">§2 demo · payoff</span></div>
+    <div class="say">
+      <p class="zl">Say</p>
+      <ul>
+        <li><span class="q">"Five prompts. Two raw files → a classified, materiality-tiered break list with dispositions. About ten minutes."</span></li>
+        <li><strong>"But notice — Copilot needed a human to tell it Barrick Gold and Barrick Mining are the same company."</strong></li>
+        <li>An AI can match numbers; it can't know your corp-action history unless you tell it.</li>
+        <li><span class="q">"Copilot handles the grunt work — joins, aggregations, comparisons. You bring the judgment."</span></li>
+      </ul>
+    </div>
+    <div class="row">
+      <div class="panel do">
+        <p class="zl">Paste</p>
+        <div class="promptbox"><pre>Barrick Gold Corp (067901108) and Barrick Mining Corp (06849F108) are the same position before and after a corporate action — treat them as a reclassification, not two separate breaks. Same for Medtronic Inc. (585055106) and Medtronic plc (G5960L103). Reclassify those four rows as "Corporate Action — Waive" and update the table.</pre><button class="copybtn" type="button">Copy</button></div>
+      </div>
+      <div class="panel verify">
+        <p class="zl">Verify</p>
+        <ul>
+          <li><span class="mono">4</span> rows → Corporate Action — Waive</li>
+          <li>Material remaining = <span class="mono">3</span>: GE <span class="mono">$3,316,320</span> / SPGI <span class="mono">$54,163</span> / CI <span class="mono">$15,884</span></li>
+          <li>Deck's "3 remaining" now agrees with the data</li>
+        </ul>
+      </div>
+      <div class="panel diverge">
+        <p class="zl">If it diverges</p>
+        <dl>
+          <dt class="m">MATCH</dt><dd>Deliver the close. Breathe.</dd>
+          <dt class="c">COSMETIC</dt><dd>Different disposition wording — fine if 4 rows waived.</dd>
+          <dt class="b">BREAK</dt><dd>It rebuilt the whole table wrong → "Only change those four rows; keep everything else."</dd>
+        </dl>
+      </div>
+    </div>
+    <div class="drawer">
+      <h3>Expected output</h3>
+      <div class="tblwrap"><table>
+        <tr><th>CUSIP</th><th>Tkr</th><th>Category</th><th>Disposition</th></tr>
+        <tr><td class="cusip">067901108</td><td class="cusip">GOLD</td><td>Corporate Action</td><td>Waive — paired with 06849F108</td></tr>
+        <tr><td class="cusip">06849F108</td><td class="cusip">B</td><td>Corporate Action</td><td>Waive — paired with 067901108</td></tr>
+        <tr><td class="cusip">585055106</td><td class="cusip">MDT</td><td>Corporate Action</td><td>Waive — paired with G5960L103</td></tr>
+        <tr><td class="cusip">G5960L103</td><td class="cusip">MDT</td><td>Corporate Action</td><td>Waive — paired with 585055106</td></tr>
+      </table></div>
+      <h3>Rehearsal variance</h3>
+      <div class="notes" contenteditable="true" data-key="n5b" data-ph="What did this step return in rehearsal — tag each run with its engine (Opus / GPT 5.6)…"></div>
+    </div>
+  </section>
+
+  <!-- ============ 10 PARTNERSHIP ============ -->
+  <section class="page" data-tab="§3 Human">
+    <div class="pagehead"><h1>What Copilot did vs. what a human still must do</h1><span class="chip">§3 · ~3 min</span></div>
+    <div class="say">
+      <p class="zl">Say</p>
+      <ul>
+        <li><strong>Strong:</strong> aggregation, cross-table comparison, population diffs, blank-field profiling, classification, steering with context.</li>
+        <li><strong>Still human:</strong> root-cause <em>conclusions</em>, SOX / PCAOB / EUC sign-off, deterministic recons, corp-action identification, catching hardcoded values.</li>
+        <li><span class="q">"Think of Copilot as a junior analyst who is very fast at reading tables and writing formulas — but who needs you to check every number, catch every corporate action, and sign off on every conclusion."</span></li>
+      </ul>
+    </div>
+    <div class="row">
+      <div class="panel do"><p class="zl">Do</p><ul class="actions"><li>Back to slides</li></ul></div>
+      <div class="panel verify"><p class="zl">Verify</p><ul><li>Mention: same prompt, different runs → non-determinism</li><li>Mention: any figure feeding a financial statement needs human sign-off</li></ul></div>
+      <div class="panel diverge"><p class="zl">If it diverges</p><p class="none">—</p></div>
+    </div>
+  </section>
+
+  <!-- ============ 11 DISCUSSION ============ -->
+  <section class="page" data-tab="§4 Discuss">
+    <div class="pagehead"><h1>Open discussion</h1><span class="chip">§4 · 5–10 min</span></div>
+    <div class="say">
+      <p class="zl">Say — ask the room</p>
+      <ul>
+        <li><span class="q">"What reconciliation in your workflow has the most manual VLOOKUP / pivot / eyeball time? Could Copilot take a first pass?"</span></li>
+        <li><span class="q">"Where would you NOT trust this output without a second check? What's the control?"</span></li>
+        <li><span class="q">"If you could teach Copilot one thing about your process — like we just taught it the Barrick corporate action — what would it be?"</span></li>
+      </ul>
+    </div>
+    <div class="row">
+      <div class="panel do"><p class="zl">Do</p><p class="none">Facilitate. Let silences sit.</p></div>
+      <div class="panel verify"><p class="zl">Verify</p><p class="none">—</p></div>
+      <div class="panel diverge">
+        <p class="zl">If asked</p>
+        <dl>
+          <dt class="c">"IS THIS REAL DATA?"</dt><dd>"100% synthetic — fictional fund Meridian Flex. Patterns modeled on a real review I completed; no real client or account data shown."</dd>
+          <dt class="b">COPILOT STALLED EARLIER?</dt><dd>Own it: "That's the non-determinism point — and why the human stays in the loop."</dd>
+        </dl>
+      </div>
+    </div>
+    <div class="drawer">
+      <h3>Full recovery playbook</h3>
+      <div class="flagnote"><strong>CUSIPs as numbers:</strong> "Treat the CUSIP column as text, not a number."</div>
+      <div class="flagnote"><strong>Hardcoded value:</strong> "See how it wrote a static number instead of =SUM(…)? Known behavior — if a row changes, that number won't update. Always check."</div>
+      <div class="flagnote"><strong>Stall — three rungs, in order:</strong> ① re-run the same prompt. ② Switch the model picker to <strong>GPT 5.6 extra think</strong> and re-run — narrate it: "same prompt, different model — that's the non-determinism point, live." (Extra think is slower; budget ~a minute of banter.) ③ Open the separate closed RECON workbook — "let me walk you through the recon Copilot would have built" — then provenance: <strong>"Everything left of Break Category came from the data. The last three columns are where the analyst lives, and no prompt fills them in."</strong> Legend tab has glossary + provenance if asked.</div>
+      <div class="flagnote"><strong>Lost context:</strong> re-paste the prior prompt, or "Using the 13 CUSIPs from your last answer…"</div>
+    </div>
+  </section>
+
+</main>
+
+<div class="controls">
+  <button class="navbtn prev" id="prevBtn" type="button">← Back</button>
+  <span class="pos" id="pos">1 / 12</span>
+  <button class="navbtn" id="nextBtn" type="button">Next →</button>
+  <button class="drawerbtn" id="drawerBtn" type="button">Details ▾</button>
+  <span class="keys"><kbd>←</kbd><kbd>→</kbd> pages · <kbd>D</kbd> details</span>
+</div>
+
+<script>
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.page'));
+  var tabsNav = document.getElementById('tabs');
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var drawerBtn = document.getElementById('drawerBtn');
+  var pos = document.getElementById('pos');
+  var NS = 'meridian-console:';
+  var cur = 0;
+  try { cur = Math.min(pages.length - 1, parseInt(localStorage.getItem(NS + 'page') || '0', 10) || 0); } catch (e) {}
+
+  pages.forEach(function (p, i) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = p.getAttribute('data-tab');
+    b.addEventListener('click', function () { show(i); });
+    tabsNav.appendChild(b);
+  });
+  var tabBtns = Array.prototype.slice.call(tabsNav.children);
+
+  function show(i) {
+    cur = Math.max(0, Math.min(pages.length - 1, i));
+    pages.forEach(function (p, j) {
+      p.classList.toggle('active', j === cur);
+      if (j !== cur) p.classList.remove('open');
+    });
+    tabBtns.forEach(function (b, j) { b.classList.toggle('active', j === cur); });
+    pos.textContent = (cur + 1) + ' / ' + pages.length;
+    prevBtn.disabled = cur === 0;
+    nextBtn.disabled = cur === pages.length - 1;
+    var hasDrawer = !!pages[cur].querySelector('.drawer');
+    drawerBtn.disabled = !hasDrawer;
+    drawerBtn.textContent = pages[cur].classList.contains('open') ? 'Details ▴' : 'Details ▾';
+    try { localStorage.setItem(NS + 'page', String(cur)); } catch (e) {}
+  }
+  function toggleDrawer() {
+    var p = pages[cur];
+    if (!p.querySelector('.drawer')) return;
+    p.classList.toggle('open');
+    drawerBtn.textContent = p.classList.contains('open') ? 'Details ▴' : 'Details ▾';
+  }
+  prevBtn.addEventListener('click', function () { show(cur - 1); });
+  nextBtn.addEventListener('click', function () { show(cur + 1); });
+  drawerBtn.addEventListener('click', toggleDrawer);
+  document.addEventListener('keydown', function (e) {
+    var t = e.target;
+    if (t && (t.isContentEditable || t.tagName === 'INPUT' || t.tagName === 'TEXTAREA')) return;
+    if (e.key === 'ArrowRight' || e.key === 'PageDown') { e.preventDefault(); show(cur + 1); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); show(cur - 1); }
+    else if (e.key === 'd' || e.key === 'D') { e.preventDefault(); toggleDrawer(); }
+  });
+  show(cur);
+
+  // copy buttons
+  document.querySelectorAll('.copybtn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var text = btn.parentElement.querySelector('pre').textContent;
+      function done() {
+        btn.textContent = 'Copied ✓'; btn.classList.add('done');
+        setTimeout(function () { btn.textContent = 'Copy'; btn.classList.remove('done'); }, 1600);
+      }
+      function fallback() {
+        var ta = document.createElement('textarea');
+        ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); done(); } catch (e) {}
+        document.body.removeChild(ta);
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done).catch(fallback);
+      } else { fallback(); }
+    });
+  });
+
+  // persist checklist + notes
+  document.querySelectorAll('.check input[type="checkbox"]').forEach(function (cb) {
+    try { cb.checked = localStorage.getItem(NS + cb.id) === '1'; } catch (e) {}
+    cb.addEventListener('change', function () {
+      try { localStorage.setItem(NS + cb.id, cb.checked ? '1' : '0'); } catch (e) {}
+    });
+  });
+  document.querySelectorAll('.notes').forEach(function (el) {
+    var key = NS + el.getAttribute('data-key');
+    try { var saved = localStorage.getItem(key); if (saved) el.textContent = saved; } catch (e) {}
+    el.addEventListener('input', function () {
+      try { localStorage.setItem(key, el.textContent); } catch (e) {}
+    });
+  });
+</script>

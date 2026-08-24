@@ -1,0 +1,279 @@
+<meta charset="utf-8">
+<title>Meridian Pre-Run</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500;600&display=swap">
+<style>
+  /* Room-facing, projector-first: deliberately single-theme light. */
+  :root {
+    --paper: #FBFCFA;
+    --card: #FFFFFF;
+    --ink: #16232A;
+    --muted: #58696B;
+    --rule: #D6DDD6;
+    --tick: #146B4E;
+    --tick-soft: #E1F0E8;
+    --code-bg: #EEF2ED;
+    --shadow: 0 1px 4px rgba(22,35,42,.09);
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    background: var(--paper); color: var(--ink);
+    font-family: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 16px; line-height: 1.5; margin: 0;
+    display: flex; flex-direction: column; min-height: 100vh;
+  }
+  main { flex: 1; display: flex; flex-direction: column; max-width: 1160px; width: 100%; margin: 0 auto; padding: 30px 32px 0; }
+  .page { display: none; flex: 1; flex-direction: column; }
+  .page.active { display: flex; }
+
+  /* title page */
+  .cover { justify-content: center; align-items: flex-start; gap: 4px; }
+  .cover .eyebrow { font-size: 14px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--tick); margin: 0; }
+  .cover h1 { font-size: 54px; font-weight: 700; letter-spacing: -.02em; margin: 6px 0 10px; text-wrap: balance; }
+  .cover .sub { font-size: 20px; color: var(--muted); margin: 0 0 22px; max-width: 34em; }
+  .cover .facts { font-family: 'Spline Sans Mono', Menlo, monospace; font-size: 14px; color: var(--muted); }
+  .cover .facts span { margin-right: 26px; }
+
+  /* step pages */
+  .steptag {
+    font-family: 'Spline Sans Mono', Menlo, monospace;
+    font-size: 14px; font-weight: 600; letter-spacing: .1em; color: var(--tick); margin: 0 0 4px;
+  }
+  h2 { font-size: 32px; font-weight: 700; letter-spacing: -.015em; margin: 0 0 18px; text-wrap: balance; }
+
+  .promptlbl { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 0 0 6px; }
+  .prompt {
+    font-family: 'Spline Sans Mono', Menlo, monospace; font-size: 15px; line-height: 1.6;
+    background: var(--code-bg); border: 1px solid var(--rule); border-left: 5px solid var(--tick);
+    border-radius: 10px; padding: 14px 18px; margin: 0 0 20px;
+    white-space: pre-wrap; word-break: break-word; max-width: 62em;
+  }
+
+  .tblwrap { overflow: auto; border: 1px solid var(--rule); border-radius: 10px; background: var(--card); box-shadow: var(--shadow); max-height: 56vh; }
+  table { border-collapse: collapse; width: 100%; font-size: 15px; }
+  th {
+    text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: .06em;
+    color: var(--muted); font-weight: 600; padding: 10px 14px;
+    border-bottom: 2px solid var(--rule); background: var(--code-bg);
+    position: sticky; top: 0; white-space: nowrap;
+  }
+  td { padding: 7px 14px; border-bottom: 1px solid var(--rule); }
+  tr:last-child td { border-bottom: none; }
+  td.num, th.num { text-align: right; }
+  td.num, td.cusip { font-family: 'Spline Sans Mono', Menlo, monospace; font-variant-numeric: tabular-nums; font-size: 14px; }
+  td.total { font-weight: 700; }
+  tr.hl td { background: var(--tick-soft); }
+  tr.grand td { border-top: 2px solid var(--ink); background: var(--card); }
+
+  .resultline {
+    font-size: 19px; font-weight: 600; margin: 16px 0 0;
+  }
+  .resultline .mono { font-family: 'Spline Sans Mono', Menlo, monospace; color: var(--tick); }
+
+  /* controls */
+  .controls {
+    position: sticky; bottom: 0; margin-top: 20px;
+    background: var(--card); border-top: 1px solid var(--rule);
+    padding: 12px 32px; display: flex; align-items: center; gap: 16px;
+  }
+  .navbtn {
+    font-family: 'Archivo', sans-serif; font-size: 16px; font-weight: 700;
+    background: var(--tick); color: #fff; border: none; border-radius: 8px;
+    padding: 11px 30px; cursor: pointer; min-width: 130px;
+  }
+  .navbtn.prev { background: transparent; color: var(--ink); border: 1px solid var(--rule); font-weight: 600; }
+  .navbtn:hover, .navbtn:focus-visible { filter: brightness(1.06); outline: none; }
+  .navbtn:disabled { opacity: .3; cursor: default; }
+  .pos { font-family: 'Spline Sans Mono', Menlo, monospace; font-size: 14px; color: var(--muted); min-width: 60px; text-align: center; }
+  .synth { margin-left: auto; font-size: 12.5px; color: var(--muted); }
+</style>
+
+<main>
+
+  <!-- ============ COVER ============ -->
+  <section class="page cover">
+    <p class="eyebrow">Copilot in Excel · Pre-run results</p>
+    <h1>Meridian Pre-Run</h1>
+    <p class="sub">The ABC missing-cost reconciliation, step by step — each prompt and the output Copilot builds from the raw SPL and WSR tables.</p>
+    <p class="facts">
+      <span>MERIDIAN FLEX FUNDS</span>
+      <span>ACCT 123456789</span>
+      <span>tblSPL · 58 rows</span>
+      <span>tblWSR · 126 rows</span>
+      <span>DATA 100% SYNTHETIC</span>
+      <span>FIGURES RECOMPUTED FROM RAW DATA · 2026-08-24</span>
+    </p>
+  </section>
+
+  <!-- ============ STEP 1 ============ -->
+  <section class="page">
+    <p class="steptag">STEP 1 · AGGREGATION</p>
+    <h2>How big is the book?</h2>
+    <p class="promptlbl">Prompt</p>
+    <pre class="prompt">In tblWSR, total the Book Cost by Security ID and show me the grand total.</pre>
+    <div class="tblwrap"><table>
+      <tr><th>Security ID</th><th>Security</th><th class="num">Total Book Cost</th></tr>
+      <tr class="hl"><td class="cusip">369604301</td><td>GE Aerospace (GE)</td><td class="num total">$19,897,920.00</td></tr>
+      <tr><td class="cusip">594918104</td><td>Microsoft (MSFT)</td><td class="num">$63,165.73</td></tr>
+      <tr><td class="cusip">78409V104</td><td>S&amp;P Global (SPGI)</td><td class="num">$54,162.55</td></tr>
+      <tr><td class="cusip">037833100</td><td>Apple (AAPL)</td><td class="num">$45,992.00</td></tr>
+      <tr><td class="cusip">64110L106</td><td>Netflix (NFLX)</td><td class="num">$38,837.40</td></tr>
+      <tr><td class="cusip">…</td><td><em>~52 more CUSIPs</em></td><td class="num">…</td></tr>
+      <tr class="grand"><td></td><td class="total">Grand total</td><td class="num total">$20,782,173.27</td></tr>
+    </table></div>
+    <p class="resultline">Grand total <span class="mono">$20,782,173.27</span> — one position, GE Aerospace, is ≈ <span class="mono">96%</span> of the book.</p>
+  </section>
+
+  <!-- ============ STEP 2 ============ -->
+  <section class="page">
+    <p class="steptag">STEP 2 · UNIT COMPARISON</p>
+    <h2>Where do the numbers differ?</h2>
+    <p class="promptlbl">Prompt</p>
+    <pre class="prompt">Compare total units per CUSIP between tblSPL (column "Product" = CUSIP, column "TD" = units) and tblWSR (column "Security ID" = CUSIP, column "Units Utilized" = units). Show me every CUSIP where the totals don't match.</pre>
+    <div class="tblwrap"><table>
+      <tr><th>CUSIP</th><th>Name</th><th class="num">SPL Units</th><th class="num">WSR Units</th><th class="num">Difference</th></tr>
+      <tr class="hl"><td class="cusip">369604301</td><td>GE Aerospace</td><td class="num">100,000</td><td class="num">120,000</td><td class="num">−20,000</td></tr>
+      <tr><td class="cusip">654106103</td><td>Nike Inc. Class B</td><td class="num">250</td><td class="num">140</td><td class="num">+110</td></tr>
+      <tr><td class="cusip">458140100</td><td>Intel Corporation</td><td class="num">2</td><td class="num">3</td><td class="num">−1</td></tr>
+      <tr><td class="cusip">549498103</td><td>Lucid Group Inc.</td><td class="num">3</td><td class="num">1</td><td class="num">+2</td></tr>
+      <tr><td class="cusip">067901108</td><td>Barrick Gold Corp</td><td class="num">200</td><td class="num">0</td><td class="num">+200</td></tr>
+      <tr><td class="cusip">585055106</td><td>Medtronic Inc.</td><td class="num">150</td><td class="num">0</td><td class="num">+150</td></tr>
+      <tr><td class="cusip">68389X105</td><td>Oracle Corporation</td><td class="num">240</td><td class="num">0</td><td class="num">+240</td></tr>
+      <tr><td class="cusip">70450Y103</td><td>PayPal Holdings Inc.</td><td class="num">180</td><td class="num">0</td><td class="num">+180</td></tr>
+      <tr><td class="cusip">90353T100</td><td>Uber Technologies</td><td class="num">320</td><td class="num">0</td><td class="num">+320</td></tr>
+      <tr><td class="cusip">06849F108</td><td>Barrick Mining Corp</td><td class="num">0</td><td class="num">200</td><td class="num">−200</td></tr>
+      <tr><td class="cusip">125523100</td><td>Cigna Group</td><td class="num">0</td><td class="num">95</td><td class="num">−95</td></tr>
+      <tr><td class="cusip">78409V104</td><td>S&amp;P Global Inc.</td><td class="num">0</td><td class="num">130</td><td class="num">−130</td></tr>
+      <tr><td class="cusip">G5960L103</td><td>Medtronic plc</td><td class="num">0</td><td class="num">150</td><td class="num">−150</td></tr>
+    </table></div>
+    <p class="resultline"><span class="mono">13</span> CUSIPs with mismatched totals — the remaining <span class="mono">49</span> match exactly.</p>
+  </section>
+
+  <!-- ============ STEP 3 ============ -->
+  <section class="page">
+    <p class="steptag">STEP 3 · POPULATION DIFF</p>
+    <h2>What's missing from each side?</h2>
+    <p class="promptlbl">Prompt</p>
+    <pre class="prompt">Of those 13 mismatches, which CUSIPs appear only in tblSPL with zero in tblWSR, and which appear only in tblWSR with zero in tblSPL?</pre>
+    <div class="tblwrap"><table>
+      <tr><th>Bucket</th><th>CUSIP</th><th>Name</th><th class="num">Units</th><th class="num">Book Cost</th></tr>
+      <tr class="hl"><td>SPL only</td><td class="cusip">067901108</td><td>Barrick Gold Corp</td><td class="num">200</td><td class="num">—</td></tr>
+      <tr class="hl"><td>SPL only</td><td class="cusip">585055106</td><td>Medtronic Inc.</td><td class="num">150</td><td class="num">—</td></tr>
+      <tr><td>SPL only</td><td class="cusip">68389X105</td><td>Oracle Corporation</td><td class="num">240</td><td class="num">—</td></tr>
+      <tr><td>SPL only</td><td class="cusip">70450Y103</td><td>PayPal Holdings Inc.</td><td class="num">180</td><td class="num">—</td></tr>
+      <tr><td>SPL only</td><td class="cusip">90353T100</td><td>Uber Technologies Inc.</td><td class="num">320</td><td class="num">—</td></tr>
+      <tr class="hl"><td>WSR only</td><td class="cusip">06849F108</td><td>Barrick Mining Corp</td><td class="num">200</td><td class="num">$4,035.00</td></tr>
+      <tr class="hl"><td>WSR only</td><td class="cusip">G5960L103</td><td>Medtronic plc</td><td class="num">150</td><td class="num">$11,527.50</td></tr>
+      <tr><td>WSR only</td><td class="cusip">125523100</td><td>Cigna Group</td><td class="num">95</td><td class="num">$15,884.00</td></tr>
+      <tr><td>WSR only</td><td class="cusip">78409V104</td><td>S&amp;P Global Inc.</td><td class="num">130</td><td class="num">$54,162.55</td></tr>
+    </table></div>
+    <p class="resultline"><span class="mono">5</span> SPL-only · <span class="mono">4</span> WSR-only — the other <span class="mono">4</span> mismatches (GE, Nike, Intel, Lucid) are quantity breaks, not population breaks.</p>
+  </section>
+
+  <!-- ============ STEP 4 ============ -->
+  <section class="page">
+    <p class="steptag">STEP 4 · BASIS COMPLETENESS</p>
+    <h2>Which lots have no cost?</h2>
+    <p class="promptlbl">Prompt</p>
+    <pre class="prompt">In tblWSR, flag every row where Book Cost is blank or empty. Group by Security ID and show me the total units affected per CUSIP.</pre>
+    <div class="tblwrap"><table>
+      <tr><th>Security ID</th><th>Security</th><th class="num">Units</th><th>Status</th></tr>
+      <tr><td class="cusip">456788108</td><td>Infosys Limited ADR (INFY)</td><td class="num">500</td><td class="cusip">UT</td></tr>
+      <tr><td class="cusip">539439109</td><td>Lloyds Banking Group ADR (LYG)</td><td class="num">340</td><td class="cusip">UT</td></tr>
+      <tr><td class="cusip">783513203</td><td>Ryanair Holdings ADR (RYAAY)</td><td class="num">150</td><td class="cusip">UT</td></tr>
+      <tr><td class="cusip">G0403H108</td><td>Aon plc (AON)</td><td class="num">279</td><td class="cusip">UT</td></tr>
+      <tr><td class="cusip">G0450A105</td><td>Arch Capital Group Ltd. (ACGL)</td><td class="num">122</td><td class="cusip">UT</td></tr>
+      <tr><td class="cusip">G7997R103</td><td>Seagate Technology (STX)</td><td class="num">88</td><td class="cusip">UT</td></tr>
+      <tr><td class="cusip">N07059210</td><td>ASML Holding N.V. (ASML)</td><td class="num">64</td><td class="cusip">UT</td></tr>
+      <tr><td class="cusip">N82405106</td><td>Stellantis N.V. (STLA)</td><td class="num">410</td><td class="cusip">UT</td></tr>
+      <tr class="grand"><td></td><td class="total">Total units with missing cost</td><td class="num total">1,953</td><td></td></tr>
+    </table></div>
+    <p class="resultline"><span class="mono">8</span> lots, <span class="mono">1,953</span> units — every one Status <span class="mono">UT</span> with no Buy Date, Book Cost, or Tax Cost.</p>
+  </section>
+
+  <!-- ============ STEP 5 ============ -->
+  <section class="page">
+    <p class="steptag">STEP 5 · CLASSIFICATION &amp; MATERIALITY</p>
+    <h2>What kind of break is each?</h2>
+    <p class="promptlbl">Prompt</p>
+    <pre class="prompt">For every CUSIP that isn't a clean match between tblSPL and tblWSR, classify it as one of:
+- Corporate Action (appears only on one side but the same position exists under a different CUSIP on the other side)
+- Missing Basis (units match but Book Cost is blank)
+- Quantity Break (appears on both sides but unit totals differ)
+- Population Break (appears only on one side with no corresponding CUSIP on the other)
+
+For Quantity Breaks and Population Breaks, estimate the dollar impact using the average Book Cost per unit from tblWSR. Mark it "Material" if the estimate exceeds $10,000.</pre>
+    <div class="tblwrap"><table>
+      <tr><th>CUSIP</th><th>Ticker</th><th>Category</th><th class="num">SPL</th><th class="num">WSR</th><th class="num">Est. Impact</th><th>Material?</th></tr>
+      <tr class="hl"><td class="cusip">369604301</td><td class="cusip">GE</td><td>Quantity Break</td><td class="num">100,000</td><td class="num">120,000</td><td class="num">$3,316,320</td><td class="total">Yes</td></tr>
+      <tr><td class="cusip">654106103</td><td class="cusip">NKE</td><td>Quantity Break</td><td class="num">250</td><td class="num">140</td><td class="num">$7,785</td><td>No</td></tr>
+      <tr><td class="cusip">458140100</td><td class="cusip">INTC</td><td>Quantity Break</td><td class="num">2</td><td class="num">3</td><td class="num">$40</td><td>No</td></tr>
+      <tr><td class="cusip">549498103</td><td class="cusip">LCID</td><td>Quantity Break</td><td class="num">3</td><td class="num">1</td><td class="num">$43</td><td>No</td></tr>
+      <tr><td class="cusip">06849F108</td><td class="cusip">B</td><td>Population — WSR only</td><td class="num">0</td><td class="num">200</td><td class="num">$4,035</td><td>No</td></tr>
+      <tr class="hl"><td class="cusip">125523100</td><td class="cusip">CI</td><td>Population — WSR only</td><td class="num">0</td><td class="num">95</td><td class="num">$15,884</td><td class="total">Yes</td></tr>
+      <tr class="hl"><td class="cusip">78409V104</td><td class="cusip">SPGI</td><td>Population — WSR only</td><td class="num">0</td><td class="num">130</td><td class="num">$54,163</td><td class="total">Yes</td></tr>
+      <tr class="hl"><td class="cusip">G5960L103</td><td class="cusip">MDT</td><td>Population — WSR only</td><td class="num">0</td><td class="num">150</td><td class="num">$11,528</td><td class="total">Yes</td></tr>
+      <tr><td class="cusip">067901108</td><td class="cusip">GOLD</td><td>Population — SPL only</td><td class="num">200</td><td class="num">0</td><td class="num">—</td><td>—</td></tr>
+      <tr><td class="cusip">585055106</td><td class="cusip">MDT</td><td>Population — SPL only</td><td class="num">150</td><td class="num">0</td><td class="num">—</td><td>—</td></tr>
+      <tr><td class="cusip">68389X105</td><td class="cusip">ORCL</td><td>Population — SPL only</td><td class="num">240</td><td class="num">0</td><td class="num">—</td><td>—</td></tr>
+      <tr><td class="cusip">70450Y103</td><td class="cusip">PYPL</td><td>Population — SPL only</td><td class="num">180</td><td class="num">0</td><td class="num">—</td><td>—</td></tr>
+      <tr><td class="cusip">90353T100</td><td class="cusip">UBER</td><td>Population — SPL only</td><td class="num">320</td><td class="num">0</td><td class="num">—</td><td>—</td></tr>
+      <tr><td class="cusip">456788108</td><td class="cusip">INFY</td><td>Missing Basis</td><td class="num">500</td><td class="num">500</td><td class="num">—</td><td>—</td></tr>
+      <tr><td class="cusip">539439109</td><td class="cusip">LYG</td><td>Missing Basis</td><td class="num">340</td><td class="num">340</td><td class="num">—</td><td>—</td></tr>
+      <tr><td class="cusip">783513203</td><td class="cusip">RYAAY</td><td>Missing Basis</td><td class="num">150</td><td class="num">150</td><td class="num">—</td><td>—</td></tr>
+      <tr><td class="cusip">G0403H108</td><td class="cusip">AON</td><td>Missing Basis</td><td class="num">279</td><td class="num">279</td><td class="num">—</td><td>—</td></tr>
+      <tr><td class="cusip">G0450A105</td><td class="cusip">ACGL</td><td>Missing Basis</td><td class="num">122</td><td class="num">122</td><td class="num">—</td><td>—</td></tr>
+      <tr><td class="cusip">G7997R103</td><td class="cusip">STX</td><td>Missing Basis</td><td class="num">88</td><td class="num">88</td><td class="num">—</td><td>—</td></tr>
+      <tr><td class="cusip">N07059210</td><td class="cusip">ASML</td><td>Missing Basis</td><td class="num">64</td><td class="num">64</td><td class="num">—</td><td>—</td></tr>
+      <tr><td class="cusip">N82405106</td><td class="cusip">STLA</td><td>Missing Basis</td><td class="num">410</td><td class="num">410</td><td class="num">—</td><td>—</td></tr>
+    </table></div>
+    <p class="resultline"><span class="mono">4</span> material breaks, led by GE Aerospace at <span class="mono">$3,316,320</span>. The 8 Missing Basis lots have matching units but no cost to estimate.</p>
+  </section>
+
+  <!-- ============ STEP 5b ============ -->
+  <section class="page">
+    <p class="steptag">STEP 5b · DOMAIN CONTEXT</p>
+    <h2>Steering the reclassification</h2>
+    <p class="promptlbl">Prompt</p>
+    <pre class="prompt">Barrick Gold Corp (067901108) and Barrick Mining Corp (06849F108) are the same position before and after a corporate action — treat them as a reclassification, not two separate breaks. Same for Medtronic Inc. (585055106) and Medtronic plc (G5960L103). Reclassify those four rows as "Corporate Action — Waive" and update the table.</pre>
+    <div class="tblwrap"><table>
+      <tr><th>CUSIP</th><th>Ticker</th><th>Category</th><th>Disposition</th></tr>
+      <tr><td class="cusip">067901108</td><td class="cusip">GOLD</td><td>Corporate Action</td><td>Waive — paired with 06849F108</td></tr>
+      <tr><td class="cusip">06849F108</td><td class="cusip">B</td><td>Corporate Action</td><td>Waive — paired with 067901108</td></tr>
+      <tr><td class="cusip">585055106</td><td class="cusip">MDT</td><td>Corporate Action</td><td>Waive — paired with G5960L103</td></tr>
+      <tr><td class="cusip">G5960L103</td><td class="cusip">MDT</td><td>Corporate Action</td><td>Waive — paired with 585055106</td></tr>
+    </table></div>
+    <p class="resultline">After the reclassification, <span class="mono">3</span> material breaks remain: GE <span class="mono">$3,316,320</span> · SPGI <span class="mono">$54,163</span> · CI <span class="mono">$15,884</span>.</p>
+  </section>
+
+</main>
+
+<div class="controls">
+  <button class="navbtn prev" id="prevBtn" type="button">← Back</button>
+  <span class="pos" id="pos">1 / 7</span>
+  <button class="navbtn" id="nextBtn" type="button">Next →</button>
+  <span class="synth">Meridian Flex Funds · all data 100% synthetic</span>
+</div>
+
+<script>
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.page'));
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var pos = document.getElementById('pos');
+  var cur = 0;
+  function show(i) {
+    cur = Math.max(0, Math.min(pages.length - 1, i));
+    pages.forEach(function (p, j) { p.classList.toggle('active', j === cur); });
+    pos.textContent = (cur + 1) + ' / ' + pages.length;
+    prevBtn.disabled = cur === 0;
+    nextBtn.disabled = cur === pages.length - 1;
+  }
+  prevBtn.addEventListener('click', function () { show(cur - 1); });
+  nextBtn.addEventListener('click', function () { show(cur + 1); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); show(cur + 1); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); show(cur - 1); }
+  });
+  show(0);
+</script>
