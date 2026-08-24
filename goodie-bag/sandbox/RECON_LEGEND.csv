@@ -1,0 +1,29 @@
+Type,Item,Source,Explanation
+Acronym,ABC,—,Fictional client name — the demo's stand-in institution
+Acronym,SPL,—,Share Position Ledger — custody position file: what you hold and how many
+Acronym,WSR,—,Worksheet Report — GainsKeeper tax lot detail: what you paid lot by lot
+Acronym,CUSIP,—,9-character North American security identifier; leading zeros are part of the ID
+Acronym,UT (Status),—,Unsettled Transfer — lot arrived via transfer; cost basis not yet received
+Acronym,C (Status),—,Complete — settled lot with basis fully populated
+Acronym,GL Term: lt / st,—,Long-term / short-term holding period for gain-loss purposes
+Acronym,TD / SD,—,Trade-date / settle-date units in the SPL
+Acronym,Book Cost vs Tax Cost,—,Book basis vs tax basis; equal in this data but can diverge in practice
+Acronym,Contra,—,The delivering entity on the other side of a transfer
+Acronym,Basis at inception,—,Whether cost basis was known when the position arrived
+Acronym,Corporate action,—,Issuer event (name/CUSIP change or redomiciliation) that moves a position to a new identifier
+Acronym,Materiality,—,Review threshold — estimated dollar impact above $10,000
+Acronym,Balance Type 6 / Product Type CUS,—,Feed codes from the custody extract; not used by the recon
+Column,CUSIP,Derived from data,Security identifier
+Column,Ticker,Derived from data,Exchange symbol
+Column,Security Name,Derived from data,Issuer name; pre-event / post-event marks the corporate-action pairs
+Column,SPL Units,Derived from data,Custody units (tblSPL TD)
+Column,WSR Lot Count,Derived from data,Number of tax lots for the CUSIP
+Column,WSR Units Total,Derived from data,Units summed across tax lots
+Column,Unit Difference,Derived from data,SPL units minus WSR units
+Column,Match Status,Derived from data,Match / SPL Only / WSR Only / Qty Break
+Column,WSR Book Cost Total,Derived from data,Book cost summed across lots
+Column,Lots Missing Basis,Derived from data,Count of lots with blank cost fields
+Column,Basis Status,Derived from data,Complete / Missing Basis / N/A
+Column,Break Category,Analyst-authored,Classification including the corporate-action pairing — the linkage automation cannot infer
+Column,Materiality,Analyst-authored,Disposition against the $10,000 threshold; waive decisions are judgment calls
+Column,Reviewer Note,Analyst-authored,The reviewer's conclusion and sign-off; no automation writes this column
