@@ -1,0 +1,33 @@
+<!-- @dsCard group="Layout" height=220 subtitle="Bordered container, header divider, 16px body" -->
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  body { margin: 0; padding: 16px; background: var(--panel-deep); font-family: var(--font-sans); color: var(--ink); }
+  .panel { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius-panel); overflow: hidden; min-width: 0; max-width: 560px; }
+  .hd { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); padding: 0 var(--space-3); border-bottom: 1px solid var(--line); min-height: 44px; }
+  .hd h2 { flex: 1; min-width: 0; margin: 0; font-size: 12px; line-height: 16px; font-weight: 600; color: var(--ink); }
+  .ib { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; border: 0; background: transparent; color: var(--muted); border-radius: var(--radius-control); cursor: pointer; transition: color 150ms cubic-bezier(0.4,0,0.2,1), background-color 150ms cubic-bezier(0.4,0,0.2,1); }
+  .ib:hover, .ib:focus-visible { background: var(--panel-deep); color: var(--ink); }
+  .ib:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+  .ib svg { width: 18px; height: 18px; flex-shrink: 0; }
+  .bd { padding: var(--space-4); font-size: 15px; line-height: 24px; }
+  .bd h3 { margin: 0 0 4px; font-size: 16px; line-height: 24px; font-weight: 600; }
+  .bd p { margin: 0; color: var(--muted); }
+</style>
+</head>
+<body>
+  <section class="panel">
+    <div class="hd">
+      <h2>Output</h2>
+      <button class="ib" aria-label="Copy"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="6" y="6" width="9" height="9" rx="1.5"/><path d="M12 3.5H4.5A1 1 0 0 0 3.5 4.5V12"/></svg></button>
+      <button class="ib" aria-label="Close"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4.5 4.5l9 9M13.5 4.5l-9 9"/></svg></button>
+    </div>
+    <div class="bd">
+      <h3>Section heading</h3>
+      <p>Body text at 15px on a 24px line. The header divider meets both edges because the panel itself has no padding.</p>
+    </div>
+  </section>
+</body>
+</html>

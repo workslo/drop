@@ -1,0 +1,46 @@
+<!-- @dsCard height=300 -->
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  body { margin: 0; background: var(--panel); font-family: var(--font-sans); }
+  .cover { position: relative; width: 960px; height: 300px; overflow: hidden; background: var(--panel); }
+  .cover svg { position: absolute; inset: 0; }
+  .ink { fill: var(--ink); }
+  .muted { fill: var(--muted); }
+  .line { fill: var(--line); }
+  .blk { rx: var(--radius-panel); }
+  .dot { fill: var(--line); }
+  .name { position: absolute; left: 40px; bottom: 40px; max-width: 440px; }
+  .name h1 { margin: 0; font-size: 104px; line-height: 0.95; font-weight: 600; letter-spacing: -0.03em; color: var(--ink); }
+  .name p { margin: 12px 0 0; font-size: 14px; line-height: 20px; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="cover">
+  <svg width="960" height="300" viewBox="0 0 960 300" aria-hidden="true">
+    <!--
+      blocks: ink 240x252 (space-6 multiples), muted 176x120, line 176x116; all radius-panel
+      arrangement: one tall ink slab with two stacked satellites, flush on a space-4 gutter, right of x=480
+      pattern: dot grid — "multiples of four, a 4px grid" is the system's first rule, so dots at one spacing step
+      steps and radii: pitch space-6 (24px), gutter space-4 (16px), corners radius-panel (8px), dot r = space-1/2
+    -->
+    <rect class="ink blk" x="504" y="24" width="240" height="252"/>
+    <rect class="muted blk" x="760" y="24" width="176" height="120"/>
+    <rect class="line blk" x="760" y="160" width="176" height="116"/>
+    <g>
+      <circle class="dot" cx="552" cy="144" r="2"/><circle class="dot" cx="576" cy="144" r="2"/><circle class="dot" cx="600" cy="144" r="2"/><circle class="dot" cx="624" cy="144" r="2"/><circle class="dot" cx="648" cy="144" r="2"/><circle class="dot" cx="672" cy="144" r="2"/><circle class="dot" cx="696" cy="144" r="2"/>
+      <circle class="dot" cx="552" cy="168" r="2"/><circle class="dot" cx="576" cy="168" r="2"/><circle class="dot" cx="600" cy="168" r="2"/><circle class="dot" cx="624" cy="168" r="2"/><circle class="dot" cx="648" cy="168" r="2"/><circle class="dot" cx="672" cy="168" r="2"/><circle class="dot" cx="696" cy="168" r="2"/>
+      <circle class="dot" cx="552" cy="192" r="2"/><circle class="dot" cx="576" cy="192" r="2"/><circle class="dot" cx="600" cy="192" r="2"/><circle class="dot" cx="624" cy="192" r="2"/><circle class="dot" cx="648" cy="192" r="2"/><circle class="dot" cx="672" cy="192" r="2"/><circle class="dot" cx="696" cy="192" r="2"/>
+      <circle class="dot" cx="552" cy="216" r="2"/><circle class="dot" cx="576" cy="216" r="2"/><circle class="dot" cx="600" cy="216" r="2"/><circle class="dot" cx="624" cy="216" r="2"/><circle class="dot" cx="648" cy="216" r="2"/><circle class="dot" cx="672" cy="216" r="2"/><circle class="dot" cx="696" cy="216" r="2"/>
+      <circle class="dot" cx="552" cy="240" r="2"/><circle class="dot" cx="576" cy="240" r="2"/><circle class="dot" cx="600" cy="240" r="2"/><circle class="dot" cx="624" cy="240" r="2"/><circle class="dot" cx="648" cy="240" r="2"/><circle class="dot" cx="672" cy="240" r="2"/><circle class="dot" cx="696" cy="240" r="2"/>
+    </g>
+  </svg>
+  <div class="name">
+    <h1>Panel<br>System</h1>
+    <p>A quiet, neutral-first interface system read off one live page.</p>
+  </div>
+</div>
+</body>
+</html>
